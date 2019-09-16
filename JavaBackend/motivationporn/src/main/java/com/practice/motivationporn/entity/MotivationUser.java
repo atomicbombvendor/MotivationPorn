@@ -112,4 +112,20 @@ public class MotivationUser implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "MotivationUser{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                ", priority=" + priority +
+                ", createTime=" + createTime +
+                ", lastVisitedTime=" + lastVisitedTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

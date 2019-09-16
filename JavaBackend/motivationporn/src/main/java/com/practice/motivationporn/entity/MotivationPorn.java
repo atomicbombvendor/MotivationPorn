@@ -28,6 +28,8 @@ public class MotivationPorn implements Serializable {
 
     private LocalDateTime createTime;
 
+    private String userName;
+
     public Long getId() {
         return id;
     }
@@ -74,5 +76,25 @@ public class MotivationPorn implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public String toString() {
+        return "MotivationPorn{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                '}';
     }
 }
