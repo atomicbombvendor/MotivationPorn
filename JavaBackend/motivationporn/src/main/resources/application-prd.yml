@@ -1,0 +1,5 @@
+info:
+  profiles: prd
+  db: prd
+server:
+  port: 8080
