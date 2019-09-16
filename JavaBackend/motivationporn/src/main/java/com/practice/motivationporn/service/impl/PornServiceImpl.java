@@ -25,6 +25,7 @@ public class PornServiceImpl extends ServiceImpl<MotivationPronMapper, Motivatio
 
         MotivationPorn porn = null;
         for (int i=0; i< 10; i++){
+            logger.debug("random " + i + " times to get porn");
             porn = this.getBaseMapper().selectById(RandomUtil.randomInt(1, total));
             if (porn != null){
                 break;
