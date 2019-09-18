@@ -4,12 +4,13 @@
         <img alt="Logo" src="../../assets/log_3_130_82.png">
       </Col>
       <Col offset="12" span="6">
-        <Button type="primary" size="large" shape="circle">再来一碗</Button>
+        <Button type="primary" size="large" shape="circle" v-bind:onclick="getRandomPorn">再来一碗</Button>
       </Col>
     </Row>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 
 export default {
   name: 'MyHeader',
@@ -17,6 +18,9 @@ export default {
     return {
       LOGO: './images/log_1.png'
     }
+  },
+  methods: {
+    ...mapActions(['getRandomPorn'])
   }
 }
 </script>

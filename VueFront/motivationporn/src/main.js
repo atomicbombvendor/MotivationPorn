@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import store from './store/index'
 
 Vue.config.productionTip = false
 
@@ -15,5 +16,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store
 })

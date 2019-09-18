@@ -3,19 +3,24 @@
 
     <Row type="flex" justify="center" align="middle" class="code-row-bg">
       <Col span="24" style="height: 100%">
-        <span id="sentence">{{porn}}</span>
+        <span id="sentence">{{randomPorn}}</span>
       </Col>
     </Row>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'MyContent',
   data () {
     return {
       porn: '不管是白帽子，还是黑帽子，会变绿的都不是好帽子。'
     }
+  },
+  computed: {
+    ...mapGetters(['randomPorn'])
   }
 }
 </script>
