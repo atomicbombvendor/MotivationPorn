@@ -4,7 +4,7 @@
         <img alt="Logo" src="../../assets/log_3_130_82.png">
       </Col>
       <Col offset="12" span="6">
-        <Button type="primary" size="large" shape="circle" v-bind:onclick="getRandomPorn">再来一碗</Button>
+        <Button type="primary" size="large" shape="circle" @click="getRandomPorn">再来一碗</Button>
       </Col>
     </Row>
 </template>
@@ -20,7 +20,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getRandomPorn'])
+    ...mapActions(['getRandomPorn']),
+    next () {
+      this.$store.dispatch('getRandomPorn')
+    }
   }
 }
 </script>

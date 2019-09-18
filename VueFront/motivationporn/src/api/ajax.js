@@ -23,9 +23,11 @@ export default function ajax (url, data = {}, type = 'GET') {
 
     // 执行Promise回调函数
     promise.then(response => {
+      console.log('resolve random porn')
       resolve(response.data)
     }).catch(error => {
       // 异常捕捉函数
+      console.log('reject random porn')
       reject(error)
     })
   })

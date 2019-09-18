@@ -6,6 +6,7 @@ import {RECEIVE_RANDOM_PORN} from './mutations-type'
 export default {
 
   [RECEIVE_RANDOM_PORN] (state, {porn}) {
-    state.porn = porn
+    console.log('receive data ' + porn)
+    state.random_porn = porn
   }
 }
