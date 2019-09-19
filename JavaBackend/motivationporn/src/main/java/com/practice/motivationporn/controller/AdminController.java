@@ -19,7 +19,7 @@ public class AdminController {
     public Object getInfo(){
 
         Map<String, Object> info = new HashMap<>(1);
-        info.put("info", "毒鸡汤网站的后台");
+        info.put("info", "毒鸡汤网站的管理员后台");
         return ResponseUtil.ok(info);
     }
 }

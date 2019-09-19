@@ -1,4 +1,4 @@
-package com.practice.motivationporn.Filter;
+package com.practice.motivationporn.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.practice.motivationporn.common.ResponseStatusEnum;
@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,10 +23,15 @@ import java.io.IOException;
 /**
  * @author haoyue
  */
+@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private SelfUserDetailsServiceImpl userDetailsService;
+    private final SelfUserDetailsServiceImpl userDetailsService;
+
+    public JwtAuthenticationTokenFilter(@Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl) {
+
+        this.userDetailsService = userDetailsServiceImpl;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,6 +46,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String subject = JwtTokenUtil.parseSubject(authHeader);
 
+        //可以添加从token中读取信息的功能
         // 解析token失败
         if (subject == null || subject.isEmpty()){
 

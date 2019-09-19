@@ -1,12 +1,10 @@
 package com.practice.motivationporn.config;
 
-import com.practice.motivationporn.Filter.JwtAuthenticationTokenFilter;
-import com.practice.motivationporn.Handler.*;
+import com.practice.motivationporn.filter.JwtAuthenticationTokenFilter;
+import com.practice.motivationporn.handler.*;
 import com.practice.motivationporn.service.SelfUserDetailsServiceImpl;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,26 +20,35 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AjaxAuthenticationEntryPoint entryPoint;
+    private final AjaxAuthenticationEntryPoint entryPoint;
 
-    @Autowired
-    private AjaxAuthenticationSuccessHandler successHandler;
+    private final AjaxAuthenticationSuccessHandler successHandler;
 
-    @Autowired
-    private AjaxAuthenticationFailureHandler failureHandler;
+    private final AjaxAuthenticationFailureHandler failureHandler;
 
-    @Autowired
-    private AjaxLogoutSuccessHandler logoutSuccessHandler;
+    private final AjaxLogoutSuccessHandler logoutSuccessHandler;
 
-    @Autowired
-    private AjaxAccessDeniedHandler accessDeniedHandler;
+    private final AjaxAccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    private SelfUserDetailsServiceImpl selfUserDetailsService;
+    private final SelfUserDetailsServiceImpl selfUserDetailsService;
 
-    @Autowired
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    public SpringSecurityConfig(@Autowired AjaxAuthenticationEntryPoint entryPoint,
+                                @Autowired AjaxAuthenticationSuccessHandler successHandler,
+                                @Autowired AjaxAuthenticationFailureHandler failureHandler,
+                                @Autowired AjaxLogoutSuccessHandler logoutSuccessHandler,
+                                @Autowired AjaxAccessDeniedHandler accessDeniedHandler,
+                                @Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl,
+                                @Autowired JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+        this.entryPoint = entryPoint;
+        this.successHandler = successHandler;
+        this.failureHandler = failureHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.selfUserDetailsService = userDetailsServiceImpl;
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -87,6 +94,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
         // 无权访问 JSON 格式的数据
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+
         // JWT Filter
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

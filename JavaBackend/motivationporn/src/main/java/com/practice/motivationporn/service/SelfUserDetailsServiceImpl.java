@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
  * @author haoyue
  */
 @Service
+@Component("userDetailsServiceImpl")
 public class SelfUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
