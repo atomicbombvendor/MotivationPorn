@@ -22,11 +22,11 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
 
         Object userInfo = authentication.getPrincipal();
-        boolean hasPermission = false;
+        boolean hasPermission;
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 
         // 先校验是不是需要验认证的URL
-        Set<String> unLoginPermission = unLoginPermission();
+        Set<String> unLoginPermission = unAuthenticatedPermission();
         hasPermission = matchUrl(antPathMatcher, request, unLoginPermission);
 
         if (hasPermission){
@@ -35,14 +35,14 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
 
         if (userInfo instanceof SecurityUserDetail) {
             String userName = ((SecurityUserDetail) userInfo).getUsername();
-            Set<String> loginPermission = loginPermission();
+            Set<String> loginPermission = authenticatedPermission();
             hasPermission = matchUrl(antPathMatcher, request, loginPermission);
         }
 
         return hasPermission;
     }
 
-    private Set<String> loginPermission(){
+    private Set<String> authenticatedPermission(){
 
         Set<String> urls = new HashSet<>();
         // 这些 url 都是要登录后才能访问，且其他的 url 都不能访问！
@@ -50,11 +50,13 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
         return urls;
     }
 
-    private Set<String> unLoginPermission(){
+    private Set<String> unAuthenticatedPermission(){
 
         Set<String> urls = new HashSet<>();
         // 这些 url 都是要登录后才能访问，且其他的 url 都不能访问！
-        urls.add("/admin/**");
+        urls.add("/");
+        urls.add("/admin/info");
+        urls.add("/user/info");
         return urls;
     }
 

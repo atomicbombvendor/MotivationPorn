@@ -21,7 +21,7 @@ public class IndexController {
     @GetMapping(value = {"", "/"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/admin/login");
+        mv.setViewName("redirect:/admin/info");
         return mv;
     }
 

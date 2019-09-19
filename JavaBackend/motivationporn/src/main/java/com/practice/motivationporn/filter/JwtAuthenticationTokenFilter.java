@@ -38,35 +38,31 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (null == authHeader || !authHeader.startsWith(TokenEnum.TITLE.getValue())){
-            //token格式不正确
-            filterChain.doFilter(request,response);
-            return;
-        }
+        if (null != authHeader && authHeader.startsWith(TokenEnum.TITLE.getValue())) {
+            String subject = JwtTokenUtil.parseSubject(authHeader);
 
-        String subject = JwtTokenUtil.parseSubject(authHeader);
+            //可以添加从token中读取信息的功能
+            // 解析token失败
+            if (subject == null || subject.isEmpty()) {
 
-        //可以添加从token中读取信息的功能
-        // 解析token失败
-        if (subject == null || subject.isEmpty()){
+                AjaxResponseBody responseBody = new AjaxResponseBody();
+                responseBody.setMsgAndCode(ResponseStatusEnum.TOKEN_INVALID);
+                response.getWriter().write(JSON.toJSONString(responseBody));
+                return;
+            }
 
-            AjaxResponseBody responseBody = new AjaxResponseBody();
-            responseBody.setMsgAndCode(ResponseStatusEnum.TOKEN_INVALID);
-            response.getWriter().write(JSON.toJSONString(responseBody));
-            return;
-        }
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null){
+                // 获取用户的权限信息
+                UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
 
-            // 获取用户的权限信息
-            UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
-
-            if (userDetails != null){
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // 将信息交给 security
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    // 将信息交给 security
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
         }
 

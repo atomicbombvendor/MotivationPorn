@@ -44,7 +44,11 @@ public class JwtTokenUtil {
      */
     public static String parseSubject(String token) {
 
-        return parseClaims(token).getSubject();
+        Claims claims = parseClaims(token);
+        if (claims != null){
+            return claims.getSubject();
+        }
+        return null;
     }
 
     public static Claims parseClaims(String token) {

@@ -52,6 +52,6 @@ public class AjaxResponseBody implements Serializable {
 
     public void setMsgAndCode(ResponseStatusEnum statusEnum){
         this.status = statusEnum.getCode();
-        String msg = statusEnum.getMsg();
+        this.msg = statusEnum.getMsg();
     }
 }

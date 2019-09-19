@@ -41,6 +41,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                                 @Autowired AjaxAccessDeniedHandler accessDeniedHandler,
                                 @Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl,
                                 @Autowired JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+
         this.entryPoint = entryPoint;
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
@@ -67,26 +68,33 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
                 .httpBasic().authenticationEntryPoint(entryPoint)
 
-                .and()
-                .authorizeRequests()
+                .and().authorizeRequests()
 
+                //放行login(这里使用自定义登录)
+                .and().authorizeRequests().antMatchers("/").permitAll()
+                .and().authorizeRequests().antMatchers("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/user/info").permitAll()
+                .and().authorizeRequests().antMatchers("/admin/info").permitAll()
+
+                // 剩下的URL，开启认证
                 .anyRequest()
+//                .authenticated();
                 // RBAC 动态 url 认证
-                .access("@rbacauthorityservice.hasPermission(request, authentication)")
+                .access("@rbacauthorityservice.hasPermission(request, authentication)");
 
-                .and()
-                //开启登录
-                .formLogin()
-                // 登录成功时处理
-                .successHandler(successHandler)
-                // 登录失败时处理
-                .failureHandler(failureHandler)
-                .permitAll()
-
-                .and()
-                .logout()
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .permitAll();
+//                .and()
+//                //开启登录
+//                .formLogin()
+//                // 登录成功时处理
+//                .successHandler(successHandler)
+//                // 登录失败时处理
+//                .failureHandler(failureHandler)
+//                .permitAll()
+//
+//                .and()
+//                .logout()
+//                .logoutSuccessHandler(logoutSuccessHandler)
+//                .permitAll();
 
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
