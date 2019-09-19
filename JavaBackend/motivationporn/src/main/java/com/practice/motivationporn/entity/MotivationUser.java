@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * @author haoyue
+ */
 @TableName(value = "motivation_user")
 public class MotivationUser implements Serializable {
 

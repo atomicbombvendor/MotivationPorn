@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * 毒鸡汤的类
+ * @author haoyue
  */
 @TableName(value = "motivation_porn")
 public class MotivationPorn implements Serializable {

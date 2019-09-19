@@ -1,8 +1,16 @@
 package com.practice.motivationporn.common;
 
+/**
+ * @author haoyue
+ */
+
 public enum ResponseStatusEnum {
 
-    SUCCESS(200, "成功"),
+    NEED_AUTHORITIES_000(000, "Need Authorities!"),
+    LOGOUT(100, "Logout"),
+    NEED_AUTHORITIES_300(300, "Need Authorities!"),
+    LOGIN_FAILURE(400, "Login Failure"),
+    SUCCESS(200, "Success"),
     PARAMETER_VALUE_ERROR(402, "参数值不对"),
     UN_LOGIN(501, "用户未登录"),
     TOKEN_INVALID(502, "token失效"),
