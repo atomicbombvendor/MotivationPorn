@@ -1,10 +1,8 @@
 package com.practice.motivationporn.service;
 
 import com.practice.motivationporn.entity.SecurityUserDetail;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,12 +21,18 @@ import java.util.Set;
 @Component("userDetailsServiceImpl")
 public class SelfUserDetailsServiceImpl implements UserDetailsService {
 
+    /**
+     * 主要工作是在初次登录时，读取用户名和密码。加密后，和前台传入的做校验。
+     * @param userName
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
         SecurityUserDetail userInfo = new SecurityUserDetail();
         userInfo.setUsername(userName);
-        userInfo.setPassword(new BCryptPasswordEncoder().encode("123"));
+        userInfo.setPassword(new BCryptPasswordEncoder().encode("346"));
 
         Set authoritiesSet = new HashSet();
 

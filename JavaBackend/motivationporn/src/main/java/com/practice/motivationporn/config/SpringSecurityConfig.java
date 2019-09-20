@@ -6,6 +6,7 @@ import com.practice.motivationporn.service.SelfUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+
 
 /**
  * @author haoyue
@@ -21,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
+    SecurityContextPersistenceFilter xx;
     private final AjaxAuthenticationEntryPoint entryPoint;
 
     private final AjaxAuthenticationSuccessHandler successHandler;
@@ -72,7 +76,9 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
 
                 //放行login(这里使用自定义登录)
+                .and().authorizeRequests().antMatchers("/").permitAll()
                 .and().authorizeRequests().antMatchers("/user/login").permitAll()
+                .and().authorizeRequests().antMatchers("/user/logout").permitAll()
                 .and().authorizeRequests().antMatchers("/porn/random").permitAll()
                 .and().authorizeRequests().antMatchers("/user/info").permitAll()
                 .and().authorizeRequests().antMatchers("/admin/info").hasRole("ADMIN")
@@ -84,6 +90,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 // RBAC 动态 url 认证
                 .access("@rbacauthorityservice.hasPermission(request, authentication)");
+
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
                 .userDetailsService(selfUserDetailsService).tokenValiditySeconds(300);
