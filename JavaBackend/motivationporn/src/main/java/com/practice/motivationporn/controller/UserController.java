@@ -1,11 +1,15 @@
 package com.practice.motivationporn.controller;
 
+import com.practice.motivationporn.entity.User;
+import com.practice.motivationporn.util.JwtTokenUtil;
 import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +23,11 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public void login(){
+    public Object login(User user, HttpServletRequest request) {
 
+        user.setRole("ROLE_USER");
+        String token = JwtTokenUtil.generateToken(user.getUserName(), null);
+        return ResponseUtil.ok(token);
     }
 
     @GetMapping("/info")

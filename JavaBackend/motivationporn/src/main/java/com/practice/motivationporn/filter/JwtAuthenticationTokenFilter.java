@@ -51,6 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 return;
             }
 
+            // 有token，但是用户没有认证过。getContext中没有用户认证信息
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 // 获取用户的权限信息

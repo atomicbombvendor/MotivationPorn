@@ -5,6 +5,7 @@ import com.practice.motivationporn.handler.*;
 import com.practice.motivationporn.service.SelfUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -71,30 +72,20 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
 
                 //放行login(这里使用自定义登录)
-                .and().authorizeRequests().antMatchers("/").permitAll()
-                .and().authorizeRequests().antMatchers("/login").permitAll()
-                .and().authorizeRequests().antMatchers("/user/info").permitAll()
-                .and().authorizeRequests().antMatchers("/admin/info").permitAll()
-
+                .and().authorizeRequests().antMatchers("/user/login").permitAll()
+                .and().authorizeRequests().antMatchers("/user/info").hasAnyRole("USER")
+                .and().authorizeRequests().antMatchers("/user/info").hasAnyAuthority("ROLE_USER")
+                .and().authorizeRequests().antMatchers("/user/info").hasAnyRole("USER")
+                .and().authorizeRequests().antMatchers("/admin/info").hasAuthority("ROLE_ADMIN")
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js"
+                ).permitAll()
                 // 剩下的URL，开启认证
                 .anyRequest()
-//                .authenticated();
                 // RBAC 动态 url 认证
                 .access("@rbacauthorityservice.hasPermission(request, authentication)");
-
-//                .and()
-//                //开启登录
-//                .formLogin()
-//                // 登录成功时处理
-//                .successHandler(successHandler)
-//                // 登录失败时处理
-//                .failureHandler(failureHandler)
-//                .permitAll()
-//
-//                .and()
-//                .logout()
-//                .logoutSuccessHandler(logoutSuccessHandler)
-//                .permitAll();
+//        .authenticated();
 
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
@@ -104,6 +95,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
         // JWT Filter
+        // 在所有请求的URL之前做了过滤
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

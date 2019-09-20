@@ -3,6 +3,7 @@ package com.practice.motivationporn.service.impl;
 import com.practice.motivationporn.entity.SecurityUserDetail;
 import com.practice.motivationporn.service.RbacAuthorityService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
@@ -22,19 +23,21 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
 
         Object userInfo = authentication.getPrincipal();
-        boolean hasPermission;
+        boolean hasPermission = true;
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 
         // 先校验是不是需要验认证的URL
-        Set<String> unLoginPermission = unAuthenticatedPermission();
-        hasPermission = matchUrl(antPathMatcher, request, unLoginPermission);
+//        Set<String> unLoginPermission = unAuthenticatedPermission();
+//        hasPermission = matchUrl(antPathMatcher, request, unLoginPermission);
+//
+//        if (hasPermission){
+//            return true;
+//        }
 
-        if (hasPermission){
-            return true;
-        }
-
+        // 可以做更详细的权限判断
         if (userInfo instanceof SecurityUserDetail) {
             String userName = ((SecurityUserDetail) userInfo).getUsername();
+            Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) ((SecurityUserDetail) userInfo).getAuthorities();
             Set<String> loginPermission = authenticatedPermission();
             hasPermission = matchUrl(antPathMatcher, request, loginPermission);
         }
@@ -53,10 +56,8 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
     private Set<String> unAuthenticatedPermission(){
 
         Set<String> urls = new HashSet<>();
-        // 这些 url 都是要登录后才能访问，且其他的 url 都不能访问！
-        urls.add("/");
-        urls.add("/admin/info");
-        urls.add("/user/info");
+        // 这些 url 不需要登录后才能访问，且其他的 url 都不能访问！
+        urls.add("/**");
         return urls;
     }
 
