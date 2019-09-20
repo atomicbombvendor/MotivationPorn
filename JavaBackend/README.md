@@ -13,3 +13,4 @@
 2. 在 config中配置的URL权限
 3. RBAC自定义的权限认证
 4. ROLE_XXX是角色。XXX是权限。
+5. 密码解析的原理：https://www.jianshu.com/p/a3a05d227d1b
