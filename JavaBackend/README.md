@@ -12,3 +12,4 @@
 1. jwtAuthenticationTokenFilter token认证，发现是不是带有token，解析用户的身份。
 2. 在 config中配置的URL权限
 3. RBAC自定义的权限认证
+4. ROLE_XXX是角色。XXX是权限。

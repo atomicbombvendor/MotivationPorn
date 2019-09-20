@@ -23,16 +23,8 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
 
         Object userInfo = authentication.getPrincipal();
-        boolean hasPermission = true;
+        boolean hasPermission = false;
         AntPathMatcher antPathMatcher = new AntPathMatcher();
-
-        // 先校验是不是需要验认证的URL
-//        Set<String> unLoginPermission = unAuthenticatedPermission();
-//        hasPermission = matchUrl(antPathMatcher, request, unLoginPermission);
-//
-//        if (hasPermission){
-//            return true;
-//        }
 
         // 可以做更详细的权限判断
         if (userInfo instanceof SecurityUserDetail) {
@@ -49,15 +41,7 @@ public class RbacAuthorityServiceImpl implements RbacAuthorityService {
 
         Set<String> urls = new HashSet<>();
         // 这些 url 都是要登录后才能访问，且其他的 url 都不能访问！
-        urls.add("/users/**");
-        return urls;
-    }
-
-    private Set<String> unAuthenticatedPermission(){
-
-        Set<String> urls = new HashSet<>();
-        // 这些 url 不需要登录后才能访问，且其他的 url 都不能访问！
-        urls.add("/**");
+        urls.add("**/**");
         return urls;
     }
 

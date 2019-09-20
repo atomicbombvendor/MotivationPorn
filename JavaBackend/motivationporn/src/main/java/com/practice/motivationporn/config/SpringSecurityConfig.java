@@ -73,10 +73,9 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
                 //放行login(这里使用自定义登录)
                 .and().authorizeRequests().antMatchers("/user/login").permitAll()
-                .and().authorizeRequests().antMatchers("/user/info").hasAnyRole("USER")
-                .and().authorizeRequests().antMatchers("/user/info").hasAnyAuthority("ROLE_USER")
-                .and().authorizeRequests().antMatchers("/user/info").hasAnyRole("USER")
-                .and().authorizeRequests().antMatchers("/admin/info").hasAuthority("ROLE_ADMIN")
+                .and().authorizeRequests().antMatchers("/porn/random").permitAll()
+                .and().authorizeRequests().antMatchers("/user/info").permitAll()
+                .and().authorizeRequests().antMatchers("/admin/info").hasRole("ADMIN")
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js"
@@ -85,8 +84,6 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 // RBAC 动态 url 认证
                 .access("@rbacauthorityservice.hasPermission(request, authentication)");
-//        .authenticated();
-
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
                 .userDetailsService(selfUserDetailsService).tokenValiditySeconds(300);
