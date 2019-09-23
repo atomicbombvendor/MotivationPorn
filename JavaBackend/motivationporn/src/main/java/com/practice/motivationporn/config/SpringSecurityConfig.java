@@ -84,7 +84,12 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers("/admin/info").hasRole("ADMIN")
                 .antMatchers(
                         HttpMethod.GET,
-                        "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js"
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/**/*.jpg"
                 ).permitAll()
                 // 剩下的URL，开启认证
                 .anyRequest()
@@ -96,7 +101,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .userDetailsService(selfUserDetailsService).tokenValiditySeconds(300);
 
         // 无权访问 JSON 格式的数据
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+//        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
         // JWT Filter
         // 在所有请求的URL之前做了过滤

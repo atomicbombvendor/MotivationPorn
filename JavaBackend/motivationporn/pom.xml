@@ -27,7 +27,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -170,6 +169,7 @@
                     <include>application.yml</include>
                     <include>**/*.xml</include>
                     <include>**/*.html</include>
+                    <include>static/**</include>
                     <!-- 有其他资源在添加-->
                 </includes>
                 <filtering>true</filtering>

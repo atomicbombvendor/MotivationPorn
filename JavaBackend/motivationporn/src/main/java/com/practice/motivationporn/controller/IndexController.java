@@ -21,10 +21,10 @@ public class IndexController {
      * @param request
      * @return
      */
-    @GetMapping(value = {"", "/"})
+    @GetMapping(value = {"", "/", "/login"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("page/login");
+        mv.setViewName("login");
         return mv;
     }
 }
