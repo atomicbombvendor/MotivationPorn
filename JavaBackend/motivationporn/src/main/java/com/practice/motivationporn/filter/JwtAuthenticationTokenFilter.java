@@ -10,9 +10,12 @@ import com.practice.motivationporn.util.JwtTokenUtil;
 import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,7 +45,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
-
         if (null != authHeader && authHeader.startsWith(TokenEnum.TITLE.getValue())) {
             String subject = JwtTokenUtil.parseSubject(authHeader);
 
@@ -52,6 +54,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 return;
             }
 
+            // 在黑名单中，不能使用
             String blackToken = moUserService.hasBlack(authHeader);
             if (blackToken != null){
                 response.getWriter().write(JSON.toJSONString(ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID)));
@@ -61,7 +64,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // 有token，但是用户没有认证过。getContext中没有用户认证信息
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                // 获取用户的权限信息；使用token为Id,的UserDetails类。
+                // 获取用户的权限信息；使用token为Id的UserDetails类。从缓存中或者数据库查询
                 UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
 
                 if (userDetails != null) {

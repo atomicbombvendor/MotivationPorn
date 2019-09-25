@@ -4,6 +4,7 @@ import cn.hutool.core.util.EnumUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -91,9 +92,13 @@ public class SecurityUserDetail implements UserDetails, Serializable {
 
     public static SecurityUserDetail getUserDetail(MotivationUser motivationUser){
 
+        if (motivationUser == null){
+            return null;
+        }
+
         SecurityUserDetail userDetail = new SecurityUserDetail();
         userDetail.setUsername(motivationUser.getUserName());
-        userDetail.setPassword(motivationUser.getPassword());
+        userDetail.setPassword(new BCryptPasswordEncoder().encode(motivationUser.getPassword()));
         String role = Priority.getValue(motivationUser.getPriority());
 
         Set authoritiesSet = new HashSet();
@@ -105,7 +110,14 @@ public class SecurityUserDetail implements UserDetails, Serializable {
     }
 
     enum Priority{
+        /**
+         * Admin
+         */
         ADMIN(2, "ROLE_ADMIN"),
+
+        /**
+         * User
+         */
         USER(1, "ROLE_USER");
 
         private Integer index;

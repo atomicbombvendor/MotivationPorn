@@ -28,7 +28,7 @@ public class MoUserServiceImpl extends ServiceImpl<MotivationUserMapper, Motivat
     public SecurityUserDetail login(String userName, String password) {
 
         QueryWrapper<MotivationUser> queryWrapper =
-                new QueryWrapper<MotivationUser>().eq("userName", userName)
+                new QueryWrapper<MotivationUser>().eq("user_name", userName)
                 .eq("password", password);
         logger.info("put cache #" + userName);
         MotivationUser moUser = this.getBaseMapper().selectOne(queryWrapper);
@@ -48,7 +48,7 @@ public class MoUserServiceImpl extends ServiceImpl<MotivationUserMapper, Motivat
     public SecurityUserDetail selectByName(String userName) {
         logger.info("select cache #" + userName);
         QueryWrapper<MotivationUser> queryWrapper =
-                new QueryWrapper<MotivationUser>().eq("userName", userName);
+                new QueryWrapper<MotivationUser>().eq("user_name", userName);
         logger.info("put cache #" + userName);
         MotivationUser moUser = this.getBaseMapper().selectOne(queryWrapper);
         return SecurityUserDetail.getUserDetail(moUser);

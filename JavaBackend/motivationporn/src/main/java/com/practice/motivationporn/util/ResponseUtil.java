@@ -11,7 +11,7 @@ import java.util.Map;
  * 响应操作结果
  * <pre>
  *  {
- *      errno： 错误码，
+ *      code： 错误码，
  *      errmsg：错误消息，
  *      data：  响应数据
  *  }
@@ -43,7 +43,7 @@ import java.util.Map;
 public class ResponseUtil {
     public static Object ok() {
         Map<String, Object> obj = new HashMap<>();
-        obj.put("errno", ResponseStatusEnum.SUCCESS.getCode());
+        obj.put("code", ResponseStatusEnum.SUCCESS.getCode());
         obj.put("errmsg", "成功");
         return obj;
     }
@@ -51,7 +51,7 @@ public class ResponseUtil {
     public static Object ok(Object data) {
 
         Map<String, Object> obj = new HashMap<>();
-        obj.put("errno", ResponseStatusEnum.SUCCESS.getCode());
+        obj.put("code", ResponseStatusEnum.SUCCESS.getCode());
         obj.put("errmsg", "success");
         obj.put("data", data);
         return obj;
@@ -101,20 +101,20 @@ public class ResponseUtil {
 
     public static Object fail() {
         Map<String, Object> obj = new HashMap<>();
-        obj.put("errno", -1);
+        obj.put("code", -1);
         obj.put("errmsg", "错误");
         return obj;
     }
 
     public static Object fail(int errno, String errmsg) {
         Map<String, Object> obj = new HashMap<>();
-        obj.put("errno", errno);
+        obj.put("code", errno);
         obj.put("errmsg", errmsg);
         return obj;
     }
     public static Object fail(ResponseStatusEnum failStatus) {
         Map<String, Object> obj = new HashMap<>();
-        obj.put("errno", failStatus.getCode());
+        obj.put("code", failStatus.getCode());
         obj.put("errmsg", failStatus.getMsg());
         return obj;
     }

@@ -27,3 +27,14 @@ https://blog.csdn.net/ech13an/article/details/80779973
 5. 博客：
     上：https://blog.csdn.net/zzxzzxhao/article/details/83381876
     下： https://blog.csdn.net/zzxzzxhao/article/details/83412648
+
+#### 原理
+1. 一个请求一个线程
+2. session是共享的
+2. SecurityContextHolder.getContext()获取放入的认证信息
+3. SecurityContextHolder相当于ThreadLocal（单线程共享）
+4. 从 Session 中对认证信息的处理由 SecurityContextPersistenceFilter 来处理，它位于 Spring Security 过滤器链的最前面，它的主要作用是：
+   1. 当请求时，检查 Session 中是否存在 SecurityContext，如果有将其放入到线程中。
+   2. 当响应时，检查线程中是否存在 SecurityContext，如果有将其放入到 Session 中。
+5. 得到认证信息后，进行chain filter中的匹配
+6. 解释了共享session和context https://blog.csdn.net/qq_37142346/article/details/80032336
