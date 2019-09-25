@@ -39,13 +39,6 @@ public class SelfUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-//        userInfo.setUsername(userName);
-//        userInfo.setPassword(new BCryptPasswordEncoder().encode("346"));
-//        Set authoritiesSet = new HashSet();
-//        List<GrantedAuthority> ats = AuthorityUtils.commaSeparatedStringToAuthorityList("READ,ROLE_USER,ROLE_ADMIN");
-//        authoritiesSet.addAll(ats);
-//        userInfo.setAuthorities(authoritiesSet);
-
         UserDetails userDetails = moUserService.selectByName(userName);
         if (userDetails == null){
             throw new RuntimeException("User " + userName + " not exists");
