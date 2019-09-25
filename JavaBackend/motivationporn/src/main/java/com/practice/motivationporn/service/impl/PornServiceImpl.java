@@ -11,6 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * @author haoyue
+ */
 @Service
 public class PornServiceImpl extends ServiceImpl<MotivationPronMapper, MotivationPorn> implements PornService {
 
@@ -36,6 +41,14 @@ public class PornServiceImpl extends ServiceImpl<MotivationPronMapper, Motivatio
             throw new PornException("random 10 times, still is empty");
         }
         return porn;
+    }
+
+    @Override
+    public List<MotivationPorn> getAll() {
+
+        QueryWrapper<MotivationPorn> queryWrapper =
+                new QueryWrapper<MotivationPorn>();
+        return this.getBaseMapper().selectList(queryWrapper);
     }
 
 }

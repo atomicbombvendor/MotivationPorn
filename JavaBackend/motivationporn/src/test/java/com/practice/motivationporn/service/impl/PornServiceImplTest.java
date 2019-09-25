@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class PornServiceImplTest {
 
-
     @Autowired
     private PornService service;
 

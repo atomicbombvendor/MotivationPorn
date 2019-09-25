@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.common.TokenEnum;
 import com.practice.motivationporn.entity.AjaxResponseBody;
+import com.practice.motivationporn.service.MoUserService;
 import com.practice.motivationporn.service.SelfUserDetailsServiceImpl;
 import com.practice.motivationporn.util.JwtTokenUtil;
+import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,10 +29,13 @@ import java.io.IOException;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final SelfUserDetailsServiceImpl userDetailsService;
+    private final MoUserService moUserService;
 
-    public JwtAuthenticationTokenFilter(@Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl) {
+    public JwtAuthenticationTokenFilter(@Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl,
+                                        @Autowired MoUserService moUserService) {
 
         this.userDetailsService = userDetailsServiceImpl;
+        this.moUserService = moUserService;
     }
 
     @Override
@@ -41,20 +46,22 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (null != authHeader && authHeader.startsWith(TokenEnum.TITLE.getValue())) {
             String subject = JwtTokenUtil.parseSubject(authHeader);
 
-            //可以添加从token中读取信息的功能
-            // 解析token失败
+            // 解析token失败; token被修改或者过期
             if (subject == null || subject.isEmpty()) {
+                response.getWriter().write(JSON.toJSONString(ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID)));
+                return;
+            }
 
-                AjaxResponseBody responseBody = new AjaxResponseBody();
-                responseBody.setMsgAndCode(ResponseStatusEnum.TOKEN_INVALID);
-                response.getWriter().write(JSON.toJSONString(responseBody));
+            String blackToken = moUserService.hasBlack(authHeader);
+            if (blackToken != null){
+                response.getWriter().write(JSON.toJSONString(ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID)));
                 return;
             }
 
             // 有token，但是用户没有认证过。getContext中没有用户认证信息
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                // 获取用户的权限信息
+                // 获取用户的权限信息；使用token为Id,的UserDetails类。
                 UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
 
                 if (userDetails != null) {

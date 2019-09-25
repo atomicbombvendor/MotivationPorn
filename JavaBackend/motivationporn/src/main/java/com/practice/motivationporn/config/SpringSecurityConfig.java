@@ -24,7 +24,6 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
-    SecurityContextPersistenceFilter xx;
     private final AjaxAuthenticationEntryPoint entryPoint;
 
     private final AjaxAuthenticationSuccessHandler successHandler;
@@ -56,6 +55,9 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
     }
 
+    /**
+     * 定义认证用户信息获取来源，密码校验规则等
+     **/
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -94,7 +96,8 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 // 剩下的URL，开启认证
                 .anyRequest()
                 // RBAC 动态 url 认证
-                .access("@rbacauthorityservice.hasPermission(request, authentication)");
+                .access("@rbacauthorityservice.hasPermission(request, authentication)")
+                .anyRequest().authenticated();
 
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")

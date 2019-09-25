@@ -1,10 +1,14 @@
 package com.practice.motivationporn.entity;
 
+import cn.hutool.core.util.EnumUtil;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,6 +16,8 @@ import java.util.Set;
  * @author haoyue
  */
 public class SecurityUserDetail implements UserDetails, Serializable {
+
+    private static final long serialVersionUID = 7171722954972237961L;
 
     private Long id;
 
@@ -81,5 +87,62 @@ public class SecurityUserDetail implements UserDetails, Serializable {
     public SecurityUserDetail setId(Long id) {
         this.id = id;
         return this;
+    }
+
+    public static SecurityUserDetail getUserDetail(MotivationUser motivationUser){
+
+        SecurityUserDetail userDetail = new SecurityUserDetail();
+        userDetail.setUsername(motivationUser.getUserName());
+        userDetail.setPassword(motivationUser.getPassword());
+        String role = Priority.getValue(motivationUser.getPriority());
+
+        Set authoritiesSet = new HashSet();
+        List<GrantedAuthority> ats = AuthorityUtils.commaSeparatedStringToAuthorityList(role);
+        authoritiesSet.addAll(ats);
+        userDetail.setAuthorities(authoritiesSet);
+
+        return userDetail;
+    }
+
+    enum Priority{
+        ADMIN(2, "ROLE_ADMIN"),
+        USER(1, "ROLE_USER");
+
+        private Integer index;
+
+        private String value;
+
+        Priority(Integer index, String value) {
+            this.index = index;
+            this.value = value;
+        }
+
+        public Integer getIndex() {
+            return index;
+        }
+
+        public void setIndex(Integer index) {
+            this.index = index;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public static String getValue(Integer index){
+
+            if (index == null) {
+                return null;
+            }
+            Priority p = EnumUtil.likeValueOf(Priority.class, index);
+            if (p == null){
+                return null;
+            }
+            return p.getValue();
+        }
     }
 }

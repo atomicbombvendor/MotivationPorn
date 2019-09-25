@@ -52,3 +52,4 @@ ALTER TABLE `motivationporn`.`motivation_user` ADD INDEX user_index1 ( `user_nam
 
 INSERT INTO `motivation_user` VALUES (1, 'xiaobaili', 'xiaobaili', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1270903507,3056052260&fm=26&gp=0.jpg', NULL, 1, 1, '2019-09-16 17:30:43', '2019-09-16 17:30:43', '2019-09-16 17:30:43');
 INSERT INTO `motivation_user` VALUES (2, 'huaxiaomei', 'huaxiamei', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4172362726,3703199410&fm=26&gp=0.jpg', NULL, 1, 2, '2019-09-16 17:32:08', '2019-09-16 17:32:08', '2019-09-16 17:32:08');
+INSERT INTO `motivation_user` VALUES (3, 'zhangxiaohui', 'zhangxiaohui', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4172362726,3703199410&fm=26&gp=0.jpg', NULL, 1, 2, '2019-09-16 17:32:08', '2019-09-16 17:32:08', '2019-09-16 17:32:08');

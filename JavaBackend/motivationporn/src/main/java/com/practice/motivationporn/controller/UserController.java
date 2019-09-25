@@ -2,11 +2,16 @@ package com.practice.motivationporn.controller;
 
 import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.common.TokenEnum;
+import com.practice.motivationporn.entity.MotivationUser;
 import com.practice.motivationporn.entity.User;
+import com.practice.motivationporn.service.MoUserService;
 import com.practice.motivationporn.util.JwtTokenUtil;
 import com.practice.motivationporn.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -20,6 +25,11 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private MoUserService moUserService;
+
     /**
      * 从数据库中读取用户的权限信息
      * @param user
@@ -29,8 +39,12 @@ public class UserController {
     @PostMapping("/login")
     public Object login(User user, HttpServletRequest request) {
 
-        user.setRole("ROLE_USER");
-        String token = JwtTokenUtil.generateToken(user.getUserName(), null);
+        UserDetails userDetails = moUserService.login(user.getUserName(), user.getPassword());
+        if (userDetails == null){
+            return ResponseUtil.fail(ResponseStatusEnum.LOGIN_FAILURE);
+        }
+
+        String token = JwtTokenUtil.generateToken(userDetails.getUsername(), null);
         return ResponseUtil.ok(token);
     }
 
@@ -44,9 +58,9 @@ public class UserController {
         String authHeader = request.getHeader("Authorization");
         if (null != authHeader && authHeader.startsWith(TokenEnum.TITLE.getValue())) {
             String subject = JwtTokenUtil.parseSubject(authHeader);
+            moUserService.deleteUserCache(subject, authHeader);
             return ResponseUtil.ok(subject);
         }
-
         return ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID);
     }
 

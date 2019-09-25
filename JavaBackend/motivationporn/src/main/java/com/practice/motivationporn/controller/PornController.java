@@ -4,7 +4,6 @@ import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.entity.MotivationPorn;
 import com.practice.motivationporn.exception.PornException;
 import com.practice.motivationporn.service.PornService;
-import com.practice.motivationporn.service.impl.PornServiceImpl;
 import com.practice.motivationporn.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

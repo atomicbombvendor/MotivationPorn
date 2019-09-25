@@ -1,6 +1,10 @@
 package com.practice.motivationporn.service;
 
 import com.practice.motivationporn.entity.SecurityUserDetail;
+import org.checkerframework.checker.units.qual.A;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +25,11 @@ import java.util.Set;
 @Component("userDetailsServiceImpl")
 public class SelfUserDetailsServiceImpl implements UserDetailsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SelfUserDetailsServiceImpl.class);
+
+    @Autowired
+    private MoUserService moUserService;
+
     /**
      * 主要工作是在初次登录时，读取用户名和密码。加密后，和前台传入的做校验。
      * @param userName
@@ -30,16 +39,15 @@ public class SelfUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        SecurityUserDetail userInfo = new SecurityUserDetail();
-        userInfo.setUsername(userName);
-        userInfo.setPassword(new BCryptPasswordEncoder().encode("346"));
+//        userInfo.setUsername(userName);
+//        userInfo.setPassword(new BCryptPasswordEncoder().encode("346"));
+//
+//        Set authoritiesSet = new HashSet();
+//
+//        List<GrantedAuthority> ats = AuthorityUtils.commaSeparatedStringToAuthorityList("READ,ROLE_USER,ROLE_ADMIN");
+//        authoritiesSet.addAll(ats);
+//        userInfo.setAuthorities(authoritiesSet);
 
-        Set authoritiesSet = new HashSet();
-
-        List<GrantedAuthority> ats = AuthorityUtils.commaSeparatedStringToAuthorityList("READ,ROLE_USER,ROLE_ADMIN");
-        authoritiesSet.addAll(ats);
-        userInfo.setAuthorities(authoritiesSet);
-
-        return userInfo;
+        return moUserService.selectByName(userName);
     }
 }
