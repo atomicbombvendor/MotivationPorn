@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html  xmlns:th="http://www.thymeleaf.org">
 <body>
 <header th:fragment="header">
     <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <a href="javascript:;" class="layui-hide-xs"><a href="/home" style="font-weight: bold;"><div class="layui-logo">后台管理系统</div></a>
+        <a href="javascript:;" class="layui-hide-xs"><a href="/" style="font-weight: bold;"><div class="layui-logo">后台管理系统</div></a>
         </a>
         <a href="javascript:;" class="layui-hide-xs">
         	<div class="switchMenu" style="display: none;"><i class="fa fa-indent"></i></div>
@@ -14,11 +13,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="/images/logo.jpg" class="layui-nav-img"></img>
-                    <shiro:principal property="sysUserName"></shiro:principal>
                 </a>
-                <dl class="layui-nav-child">
-                    <dd id="updUsePwdDd" class="layui-this"><a href="javascript:;" onclick="updateUsePwd();">修改密码</a></dd>
-                </dl>
             </li>
             <li class="layui-nav-item"><a href="/logout">退出</a></li>
         </ul>
@@ -26,7 +21,13 @@
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <ul class="layui-nav layui-nav-tree layui-nav-side"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">数据管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/table/porn.html">毒鸡汤管理</a></dd>
+                    </dl>
+                </li>
                 <!--<li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">

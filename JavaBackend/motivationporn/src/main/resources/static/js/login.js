@@ -12,9 +12,10 @@ $(function () {
 
         let token = localStorage.getItem("motivation_porn_token");
         if (token === null){
-            layer.alert("获取token失败");
+            layer.alert("获取token失败, 登录失败。");
         }else{
-            layer.alert("获取token" + token);
+            layer.alert("获取token成功。" + token);
+            window.location.href = "/home";
         }
         // var path = window.location.href;
         // if (path.indexOf("kickout") > 0) {
@@ -36,7 +37,7 @@ function login() {
                 localStorage.setItem("motivation_porn_token", result.data);
             } else {
                 layer.alert(result.message, function () {
-                    layer.closeAll();//关闭所有弹框
+                    layer.closeAll(); //关闭所有弹框
                 });
             }
         });

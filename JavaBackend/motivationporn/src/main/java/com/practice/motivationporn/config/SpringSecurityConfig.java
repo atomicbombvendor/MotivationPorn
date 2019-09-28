@@ -79,6 +79,8 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
                 //放行login(这里使用自定义登录)
                 .and().authorizeRequests().antMatchers("/").permitAll()
+                .and().authorizeRequests().antMatchers("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/home").permitAll()
                 .and().authorizeRequests().antMatchers("/user/login").permitAll()
                 .and().authorizeRequests().antMatchers("/user/logout").permitAll()
                 .and().authorizeRequests().antMatchers("/porn/random").permitAll()
@@ -96,15 +98,11 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 // 剩下的URL，开启认证
                 .anyRequest()
                 // RBAC 动态 url 认证
-                .access("@rbacauthorityservice.hasPermission(request, authentication)")
-                .anyRequest().authenticated();
+                .access("@rbacauthorityservice.hasPermission(request, authentication)");
 
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
                 .userDetailsService(selfUserDetailsService).tokenValiditySeconds(300);
-
-        // 无权访问 JSON 格式的数据
-//        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
         // JWT Filter
         // 在所有请求的URL之前做了过滤

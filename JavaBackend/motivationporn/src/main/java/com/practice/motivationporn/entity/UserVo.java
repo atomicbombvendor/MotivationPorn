@@ -4,7 +4,7 @@ package com.practice.motivationporn.entity;
 /**
  * 测试用User
  */
-public class User {
+public class UserVo {
 
 	private String userName;
 

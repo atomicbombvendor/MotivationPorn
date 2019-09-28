@@ -12,7 +12,7 @@ import java.util.Map;
  * <pre>
  *  {
  *      code： 错误码，
- *      errmsg：错误消息，
+ *      message：错误消息，
  *      data：  响应数据
  *  }
  * </pre>
@@ -42,17 +42,35 @@ import java.util.Map;
  */
 public class ResponseUtil {
     public static Object ok() {
-        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>(2);
         obj.put("code", ResponseStatusEnum.SUCCESS.getCode());
-        obj.put("errmsg", "成功");
+        obj.put("message", "成功");
         return obj;
     }
 
     public static Object ok(Object data) {
 
-        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>(3);
         obj.put("code", ResponseStatusEnum.SUCCESS.getCode());
-        obj.put("errmsg", "success");
+        obj.put("message", "success");
+        obj.put("data", data);
+        return obj;
+    }
+
+    public static Object result(Integer code, String message, Object data) {
+
+        Map<String, Object> obj = new HashMap<>(3);
+        obj.put("code", code);
+        obj.put("message", message);
+        obj.put("data", data);
+        return obj;
+    }
+
+    public static Object result(ResponseStatusEnum statusEnum, Object data) {
+
+        Map<String, Object> obj = new HashMap<>(3);
+        obj.put("code", statusEnum.getCode());
+        obj.put("message", statusEnum.getMsg());
         obj.put("data", data);
         return obj;
     }
@@ -100,22 +118,22 @@ public class ResponseUtil {
     }
 
     public static Object fail() {
-        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>(2);
         obj.put("code", -1);
-        obj.put("errmsg", "错误");
+        obj.put("message", "错误");
         return obj;
     }
 
-    public static Object fail(int errno, String errmsg) {
-        Map<String, Object> obj = new HashMap<>();
+    public static Object fail(int errno, String message) {
+        Map<String, Object> obj = new HashMap<>(2);
         obj.put("code", errno);
-        obj.put("errmsg", errmsg);
+        obj.put("message", message);
         return obj;
     }
     public static Object fail(ResponseStatusEnum failStatus) {
-        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>(2);
         obj.put("code", failStatus.getCode());
-        obj.put("errmsg", failStatus.getMsg());
+        obj.put("message", failStatus.getMsg());
         return obj;
     }
 }

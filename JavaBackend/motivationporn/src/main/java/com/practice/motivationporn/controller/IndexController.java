@@ -1,9 +1,6 @@
 package com.practice.motivationporn.controller;
 
-import com.practice.motivationporn.util.JwtTokenUtil;
-import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +22,13 @@ public class IndexController {
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("login");
+        return mv;
+    }
+
+    @GetMapping(value = {"/home"})
+    public ModelAndView home(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("table/porn");
         return mv;
     }
 }

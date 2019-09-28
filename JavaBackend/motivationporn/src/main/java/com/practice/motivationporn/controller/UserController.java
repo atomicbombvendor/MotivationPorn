@@ -2,8 +2,7 @@ package com.practice.motivationporn.controller;
 
 import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.common.TokenEnum;
-import com.practice.motivationporn.entity.MotivationUser;
-import com.practice.motivationporn.entity.User;
+import com.practice.motivationporn.entity.UserVo;
 import com.practice.motivationporn.service.MoUserService;
 import com.practice.motivationporn.util.JwtTokenUtil;
 import com.practice.motivationporn.util.ResponseUtil;
@@ -32,14 +31,14 @@ public class UserController {
 
     /**
      * 从数据库中读取用户的权限信息
-     * @param user
+     * @param userVo
      * @param request
      * @return
      */
     @PostMapping("/login")
-    public Object login(User user, HttpServletRequest request) {
+    public Object login(UserVo userVo, HttpServletRequest request) {
 
-        UserDetails userDetails = moUserService.login(user.getUserName(), user.getPassword());
+        UserDetails userDetails = moUserService.login(userVo.getUserName(), userVo.getPassword());
         if (userDetails == null){
             return ResponseUtil.fail(ResponseStatusEnum.LOGIN_FAILURE);
         }

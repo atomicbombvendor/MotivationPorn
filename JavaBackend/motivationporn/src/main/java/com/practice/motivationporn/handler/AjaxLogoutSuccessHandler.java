@@ -2,7 +2,7 @@ package com.practice.motivationporn.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.practice.motivationporn.common.ResponseStatusEnum;
-import com.practice.motivationporn.entity.AjaxResponseBody;
+import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -20,10 +20,7 @@ public class AjaxLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        AjaxResponseBody responseBody = new AjaxResponseBody();
-
-        responseBody.setMsgAndCode(ResponseStatusEnum.LOGOUT);
-
-        response.getWriter().write(JSON.toJSONString(responseBody));
+        Object object = ResponseUtil.result(ResponseStatusEnum.LOGOUT, null);
+        response.getWriter().write(JSON.toJSONString(object));
     }
 }

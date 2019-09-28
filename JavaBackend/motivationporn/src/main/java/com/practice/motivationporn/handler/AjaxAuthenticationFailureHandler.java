@@ -2,7 +2,7 @@ package com.practice.motivationporn.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.practice.motivationporn.common.ResponseStatusEnum;
-import com.practice.motivationporn.entity.AjaxResponseBody;
+import com.practice.motivationporn.util.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -20,9 +20,6 @@ public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
 
-        AjaxResponseBody responseBody = new AjaxResponseBody();
-        responseBody.setMsgAndCode(ResponseStatusEnum.LOGIN_FAILURE);
-
-        response.getWriter().write(JSON.toJSONString(responseBody));
+        response.getWriter().write(JSON.toJSONString(ResponseUtil.fail(ResponseStatusEnum.LOGIN_FAILURE)));
     }
 }
