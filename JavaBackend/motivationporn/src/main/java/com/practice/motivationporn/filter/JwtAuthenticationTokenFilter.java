@@ -3,6 +3,7 @@ package com.practice.motivationporn.filter;
 import com.alibaba.fastjson.JSON;
 import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.common.TokenEnum;
+import com.practice.motivationporn.service.MoUserCacheService;
 import com.practice.motivationporn.service.MoUserService;
 import com.practice.motivationporn.service.SelfUserDetailsServiceImpl;
 import com.practice.motivationporn.util.JwtTokenUtil;
@@ -29,12 +30,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final SelfUserDetailsServiceImpl userDetailsService;
     private final MoUserService moUserService;
+    private final MoUserCacheService moUserCacheService;
 
     public JwtAuthenticationTokenFilter(@Autowired SelfUserDetailsServiceImpl userDetailsServiceImpl,
-                                        @Autowired MoUserService moUserService) {
+                                        @Autowired MoUserService moUserService,
+                                        @Autowired MoUserCacheService moUserCacheService) {
 
         this.userDetailsService = userDetailsServiceImpl;
         this.moUserService = moUserService;
+        this.moUserCacheService = moUserCacheService;
     }
 
     @Override
@@ -51,7 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
 
             // 在黑名单中，不能使用
-            String blackToken = moUserService.hasBlack(authHeader);
+            String blackToken = moUserCacheService.hasBlack(authHeader);
             if (blackToken != null){
                 response.getWriter().write(JSON.toJSONString(ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID)));
                 return;

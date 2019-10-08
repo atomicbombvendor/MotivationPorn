@@ -38,13 +38,6 @@ public class MoUserServiceImpl extends ServiceImpl<MotivationUserMapper, Motivat
 
     @Override
     @Cacheable(key = "#userName")
-    public SecurityUserDetail selectFromCache(String userName) {
-        logger.info("select cache #" + userName);
-        return null;
-    }
-
-    @Override
-    @Cacheable(key = "#userName")
     public SecurityUserDetail selectByName(String userName) {
         logger.info("select cache #" + userName);
         QueryWrapper<MotivationUser> queryWrapper =
@@ -54,17 +47,4 @@ public class MoUserServiceImpl extends ServiceImpl<MotivationUserMapper, Motivat
         return SecurityUserDetail.getUserDetail(moUser);
     }
 
-    @Override
-    @CacheEvict(key = "#userName", value = "moUser")
-    @CachePut(key = "#token", value = "blackList")
-    public void deleteUserCache(String userName, String token) {
-        logger.info("delete cache #" + userName);
-    }
-
-    @Override
-    @Cacheable(key = "#userName", value = "blackList")
-    public String hasBlack(String userName) {
-        logger.info("check in black #" + userName);
-        return null;
-    }
 }

@@ -3,6 +3,7 @@ package com.practice.motivationporn.controller;
 import com.practice.motivationporn.common.ResponseStatusEnum;
 import com.practice.motivationporn.common.TokenEnum;
 import com.practice.motivationporn.entity.UserVo;
+import com.practice.motivationporn.service.MoUserCacheService;
 import com.practice.motivationporn.service.MoUserService;
 import com.practice.motivationporn.util.JwtTokenUtil;
 import com.practice.motivationporn.util.ResponseUtil;
@@ -28,6 +29,9 @@ public class UserController {
 
     @Autowired
     private MoUserService moUserService;
+
+    @Autowired
+    private MoUserCacheService moUserCacheService;
 
     /**
      * 从数据库中读取用户的权限信息
@@ -57,12 +61,11 @@ public class UserController {
         String authHeader = request.getHeader("Authorization");
         if (null != authHeader && authHeader.startsWith(TokenEnum.TITLE.getValue())) {
             String subject = JwtTokenUtil.parseSubject(authHeader);
-            moUserService.deleteUserCache(subject, authHeader);
+            moUserCacheService.deleteUserCache(subject, authHeader);
             return ResponseUtil.ok(subject);
         }
         return ResponseUtil.fail(ResponseStatusEnum.TOKEN_INVALID);
     }
-
 
     /**
      * 刷新token

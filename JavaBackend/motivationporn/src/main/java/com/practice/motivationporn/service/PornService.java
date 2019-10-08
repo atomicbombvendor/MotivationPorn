@@ -16,5 +16,9 @@ public interface PornService extends IService<MotivationPorn> {
      */
     MotivationPorn getRandomOne();
 
+    /**
+     * 获取所有的毒鸡汤
+     * @return
+     */
     List<MotivationPorn> getAll();
 }
